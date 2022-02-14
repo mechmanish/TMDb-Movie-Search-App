@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.aboutMovie{
+    display: flex;
+    padding: 2rem 0;
+}
+
+.moviePoster{
+    max-width: 25rem;
+}
+
+.movieDetails{
+    padding: 2rem;
+}
