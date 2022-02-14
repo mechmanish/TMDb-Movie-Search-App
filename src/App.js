@@ -11,9 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
 
+  const [movieMatch, setMovieMatch] = useState([]);
+  const [clickedMovie, setClickedMovie] = useState([]);
+
   //useSelector is a function that takes the current state as an argument and returns whatever data you want from it.
-  const movieData = useSelector(state => state);
-  console.log(movieData, "useSelector se mili value");
+  const moviesData = useSelector(state => state);
+  console.log(moviesData, "useSelector se mili value");
 
 
   const [searchText, setSearchText] = useState("Interstellar");
@@ -27,11 +30,28 @@ const App = () => {
     dispatch(getMovieDetailsRequest(searchText));
   }, []);
 
+  console.log("");
+  const moviesArr = moviesData.requiredMovieData?.data?.results;
+  console.log(moviesArr, "moviesArray");
+  console.log(!moviesArr ? ("true") : ("false"));
 
-  const searchHandler = (event) => {
-    const { value } = event.target;                 //object.distructuring method
+
+  const searchHandler = (value) => {
+    // const { value } = event.target;                 //object.distructuring method
     dispatch(getMovieDetailsRequest(value));   //value
     setSearchText(value);
+
+    if (!value) {
+      setMovieMatch([]);
+    }
+    else {
+      let matches = moviesArr.filter((movie) => {
+        const regex = new RegExp(`${value}`, "gi");
+        return movie.original_title.match(regex);
+      })
+
+      setMovieMatch(matches);
+    }
   }
 
   // useEffect(()=>{
@@ -40,15 +60,19 @@ const App = () => {
 
 
 
-  console.log("");
-  const moviesArr = movieData.requiredMovieData?.data?.results;
-  console.log(moviesArr, "moviesArray");
-  console.log(!moviesArr ? ("true") : ("false"));
+  // console.log("");
+  // const moviesArr = moviesData.requiredMovieData?.data?.results;
+  // console.log(moviesArr, "moviesArray");
+  // console.log(!moviesArr ? ("true") : ("false"));
 
 
 
   // const posterLink = `https://image.tmdb.org/t/p/w500${moviesArrr ? (moviesArr[0].poster_path) : ("/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg")}`;
   // console.log(posterLink);
+
+  console.log("");
+  console.log(clickedMovie, "clicked movie data in app.js");
+  console.log("");
 
   return (
     <div className="App">
@@ -58,9 +82,12 @@ const App = () => {
         <MovieSearch
           searchText={searchText}
           searchHandler={searchHandler}
+          movieMatch={movieMatch}
+          setMovieMatch={setMovieMatch}
+          setClickedMovie={setClickedMovie}
         />
 
-        <AboutMovie moviesArr={moviesArr} />
+        <AboutMovie clickedMovie={clickedMovie} />
         <FooterBox />
       </div>
 

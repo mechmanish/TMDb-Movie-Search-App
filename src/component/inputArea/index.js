@@ -1,13 +1,27 @@
 import React from "react";
 import "./index.css";
 
-const MovieSearch = ({searchText, searchHandler}) =>{
+const MovieSearch = ({searchText, searchHandler, movieMatch, setMovieMatch, setClickedMovie}) =>{
 
-    // const onSuggestionHandler = (text) =>{
-    //     setSearchText(text);
-    //     setSuggestions([]);
-    //     setSelectedMovie(!selectedMovie);
+    // const [suggestions, setSuggestions] = useState([]);
+
+    // const similar = [];
+    // if(moviesArr.length > 0){
+    //     for(let i=0; i < 5; i++){
+    //         similar.push(moviesArr[i]);
+    //     }
+    //     console.log(similar, "similar");
     // }
+
+    const onMovieMatchHandler = (text, movie) =>{
+        searchHandler(text);
+        setClickedMovie(movie);
+        setMovieMatch([]);
+
+        console.log(movie, "check the data of clicked movie");
+
+
+    }
 
     // const onChangeHandler= (text) =>{
     //     setSearchText(text);
@@ -31,16 +45,16 @@ const MovieSearch = ({searchText, searchHandler}) =>{
             </div>
             <div className="searchbar">
                 <form>
-                    <input onChange={searchHandler} value={searchText} className="inputBox" type="text" placeholder="Movie Search" />
+                    <input onChange={(e)=>searchHandler(e.target.value)} value={searchText} className="inputBox" type="text" placeholder="Movie Search" />
                 </form>
 
-                {/* <span>
+                <span>
                     <ul>
-                        {suggestions && suggestions.map((suggestion, index) =>
-                            <li key={index} onClick={() => onSuggestionHandler(suggestion.original_title)}>{suggestion.original_title}</li>
+                        {movieMatch && movieMatch.map((movie, index) =>
+                            <li className="movieList" key={index} onClick={()=> onMovieMatchHandler(movie.original_title, movie)}>{movie.original_title}</li>
                         )}
                     </ul>
-                </span> */}
+                </span>
                 
                 
             </div>
